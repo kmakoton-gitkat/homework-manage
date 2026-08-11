@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer Homework 2026</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        .date-section {
+            margin-bottom: 25px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 15px;
+        }
+        .date-section:last-child {
+            border-bottom: none;
+        }
+        .date-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e53e3e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .date-header.tbd {
+            color: #718096;
+        }
+        .date-header.none {
+            color: #3182ce;
+        }
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f8fafc;
+            transition: background-color 0.2s;
+        }
+        .task-item:hover {
+            background-color: #edf2f7;
+        }
+        input[type="checkbox"] {
+            margin-top: 4px;
+            margin-right: 12px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .task-details {
+            flex: 1;
+        }
+        .subject {
+            font-weight: bold;
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 2px;
+        }
+        .content {
+            font-size: 15px;
+            line-height: 1.4;
+        }
+        .note {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 4px;
+        }
+        /* チェック時のスタイル */
+        input[type="checkbox"]:checked + .task-details .content {
+            text-decoration: line-through;
+            color: #a0aec0;
+        }
+        input[type="checkbox"]:checked + .task-details .subject {
+            color: #cbd5e0;
+        }
+        input[type="checkbox"]:checked + .task-details .note {
+            color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📅 夏休み宿題タスクリスト</h1>
+
+    <!-- 9月1日提出 -->
+    <div class="date-section">
+        <div class="date-header">🚨 9月1日(火・始業式) 提出</div>
+        
+        <div class="task-item">
+            <input type="checkbox" id="task1">
+            <div class="task-details">
+                <div class="subject">現代文</div>
+                <div class="content">『ウィニングサマー』の実施</div>
+                <div class="note">※丸付けと間違えたところは赤で直しを書く</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task2">
+            <div class="task-details">
+                <div class="subject">現代文</div>
+                <div class="content">宮修二短歌大会プリント</div>
+                <div class="note">※短歌を2首作成する</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task3">
+            <div class="task-details">
+                <div class="subject">数学α</div>
+                <div class="content">トレーニングノートの提出</div>
+                <div class="note">※毎日大問2題以上。HRで数学係に提出</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task4">
+            <div class="task-details">
+                <div class="subject">英語β</div>
+                <div class="content">Homework in Summer</div>
+                <div class="note">※週に見開き1ページ。Teamsの解答で丸付け＆直し。HRで英語係に提出（職員室の白い棚の上）</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9月2日提出 -->
+    <div class="date-section">
+        <div class="date-header">🚨 9月2日(水) 提出</div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task5">
+            <div class="task-details">
+                <div class="subject">数学β</div>
+                <div class="content">1学期の期末テストの解き直し（全問）</div>
+                <div class="note">※A4用紙に記入、表紙をつけて上部2点をホチキス留め。昼休みに数学係へ</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task6">
+            <div class="task-details">
+                <div class="subject">英語α</div>
+                <div class="content">(1) 中学マイティサマー</div>
+                <div class="note">※全ページ直接書き込み・丸付け・赤直し。p.38〜の単語トレーニング必須。解答・確認テ・ファイナルテは抜く。HRで英語係へ</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task7">
+            <div class="task-details">
+                <div class="subject">英語α</div>
+                <div class="content">(3) 自主学習ノート</div>
+                <div class="note">※期末試験の解き直しから開始。15段で3ページ×5週＝15ページ。HRで英語係へ</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task8">
+            <div class="task-details">
+                <div class="subject">英語α</div>
+                <div class="content">(4) レシテーション・コンテスト意味調べ</div>
+                <div class="note">※分からない単語の意味調べ。HRで英語係へ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- その他（要確認・提出なし） -->
+    <div class="date-section">
+        <div class="date-header tbd">🔍 日程・詳細確認が必要</div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task9">
+            <div class="task-details">
+                <div class="subject">学年（教科外）</div>
+                <div class="content">books</div>
+                <div class="note">※提出日・提出方法についてはTeamsの投稿を参照</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="date-section">
+        <div class="date-header none">✅ 提出なし（各自学習）</div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task10">
+            <div class="task-details">
+                <div class="subject">古典</div>
+                <div class="content">『ウィニングサマー』の古典内容を進める</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task11">
+            <div class="task-details">
+                <div class="subject">数学α</div>
+                <div class="content">これまでの復習（トレノなどの活用）</div>
+            </div>
+        </div>
+
+        <div class="task-item">
+            <input type="checkbox" id="task12">
+            <div class="task-details">
+                <div class="subject">英語α</div>
+                <div class="content">(2) チャンクで英単語 単語練習</div>
+                <div class="note">※p.102〜p.127（例文141〜240）。音声再生と音読。2学期始業直後から小テストあり</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+        // ページ読み込み時に保存された状態を復元
+        checkboxes.forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            if (savedState !== null) {
+                checkbox.checked = savedState === 'true';
+            }
+        });
+
+        // チェック状態が変わるたびにLocal Storageへ保存
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                localStorage.setItem(e.target.id, e.target.checked);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
