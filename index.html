@@ -13,7 +13,7 @@
             padding: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             background: #fff;
             padding: 30px;
@@ -23,8 +23,26 @@
         h1 {
             text-align: center;
             color: #2c3e50;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             font-size: 24px;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .nav button {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            background: #edf2f7;
+        }
+        .nav button.active {
+            background: #3182ce;
+            color: white;
         }
         .date-section {
             margin-bottom: 25px;
@@ -95,12 +113,75 @@
         input[type="checkbox"]:checked + .task-details .note {
             color: #e2e8f0;
         }
+
+        /* お手伝い管理用スタイル */
+        .help-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .help-controls input[type="number"], .help-controls input[type="text"] {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .help-list {
+            margin-top: 10px;
+        }
+        .help-item {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            padding: 8px;
+            border-radius: 6px;
+            background: #f8fafc;
+            margin-bottom: 8px;
+        }
+        .help-item .name {
+            flex: 1;
+            font-weight: bold;
+        }
+        .help-item .count {
+            width: 56px;
+            text-align: center;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 6px;
+        }
+        .help-item button {
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: none;
+            background: #edf2f7;
+            cursor: pointer;
+        }
+        .summary {
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        .hidden { display: none; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; }
+            .nav { flex-direction: column; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>📅 夏休み宿題タスクリスト</h1>
+
+    <div class="nav">
+        <button id="btnHome" class="active">宿題一覧</button>
+        <button id="btnHelp">お手伝い管理</button>
+    </div>
+
+    <!-- 宿題一覧ビュー -->
+    <div id="homeworkView">
 
     <!-- 9月1日提出 -->
     <div class="date-section">
@@ -161,7 +242,7 @@
             <div class="task-details">
                 <div class="subject">英語α</div>
                 <div class="content">(1) 中学マイティサマー</div>
-                <div class="note">※全ページ直接書き込み・丸付け・赤直し。p.38〜の単語トレーニング必須。解答・確認テ・ファイナルテは抜く。HRで英語係へ</div>
+                <div class="note">※全ページ直接書き込み・丸付け・赤直し。p.38〜の単語トレーニング必須。解答・確認テ・ファイナルテは抜く。HRで…</div>
             </div>
         </div>
 
@@ -227,26 +308,207 @@
         </div>
     </div>
 
+    </div>
+
+    <!-- お手伝い管理ビュー -->
+    <div id="helpView" class="hidden">
+        <h2>🤝 お手伝い管理</h2>
+        <div class="help-controls">
+            <label>1回あたりの報酬(円): <input type="number" id="rewardPerTime" min="0" step="10"></label>
+            <input type="text" id="newHelpName" placeholder="お手伝い内容を追加（例: 食器洗い）">
+            <button id="addHelpBtn">追加</button>
+            <button id="resetHelpBtn">リセット</button>
+        </div>
+
+        <div class="help-list" id="helpList"></div>
+
+        <div class="summary" id="helpSummary">合計: 0 回 / 0 円</div>
+
+        <p class="note">※データはこのブラウザの Local Storage に保存されます。</p>
+    </div>
+
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // ナビ切り替え
+        const btnHome = document.getElementById('btnHome');
+        const btnHelp = document.getElementById('btnHelp');
+        const homeworkView = document.getElementById('homeworkView');
+        const helpView = document.getElementById('helpView');
+
+        function showHome() {
+            homeworkView.classList.remove('hidden');
+            helpView.classList.add('hidden');
+            btnHome.classList.add('active');
+            btnHelp.classList.remove('active');
+        }
+        function showHelp() {
+            homeworkView.classList.add('hidden');
+            helpView.classList.remove('hidden');
+            btnHome.classList.remove('active');
+            btnHelp.classList.add('active');
+        }
+
+        btnHome.addEventListener('click', showHome);
+        btnHelp.addEventListener('click', showHelp);
+
+        // もしクエリパラメータで ?view=help 指定されていればそちらを表示
+        const params = new URLSearchParams(location.search);
+        if (params.get('view') === 'help') showHelp();
+
+        // 既存のチェックボックス状態を復元
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        
-        // ページ読み込み時に保存された状態を復元
         checkboxes.forEach(checkbox => {
             const savedState = localStorage.getItem(checkbox.id);
             if (savedState !== null) {
                 checkbox.checked = savedState === 'true';
             }
-        });
-
-        // チェック状態が変わるたびにLocal Storageへ保存
-        checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
                 localStorage.setItem(e.target.id, e.target.checked);
             });
         });
+
+        // --- お手伝い管理ロジック ---
+        const rewardInput = document.getElementById('rewardPerTime');
+        const newHelpName = document.getElementById('newHelpName');
+        const addHelpBtn = document.getElementById('addHelpBtn');
+        const resetHelpBtn = document.getElementById('resetHelpBtn');
+        const helpListEl = document.getElementById('helpList');
+        const helpSummary = document.getElementById('helpSummary');
+
+        const STORAGE_KEY_ITEMS = 'helpItems_v1';
+        const STORAGE_KEY_REWARD = 'helpReward_v1';
+
+        function loadReward() {
+            const v = localStorage.getItem(STORAGE_KEY_REWARD);
+            rewardInput.value = v !== null ? Number(v) : 0;
+        }
+        function saveReward() {
+            const v = Number(rewardInput.value) || 0;
+            localStorage.setItem(STORAGE_KEY_REWARD, v);
+            renderHelpList();
+        }
+
+        rewardInput.addEventListener('change', saveReward);
+
+        function loadItems() {
+            const raw = localStorage.getItem(STORAGE_KEY_ITEMS);
+            if (!raw) return [];
+            try { return JSON.parse(raw); } catch { return []; }
+        }
+        function saveItems(items) {
+            localStorage.setItem(STORAGE_KEY_ITEMS, JSON.stringify(items));
+        }
+
+        function makeId() {
+            return 'h_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        }
+
+        function addItem(name) {
+            if (!name || name.trim() === '') return;
+            const items = loadItems();
+            items.push({ id: makeId(), name: name.trim(), count: 0 });
+            saveItems(items);
+            renderHelpList();
+            newHelpName.value = '';
+        }
+
+        function removeItem(id) {
+            let items = loadItems();
+            items = items.filter(i => i.id !== id);
+            saveItems(items);
+            renderHelpList();
+        }
+
+        function changeCount(id, delta) {
+            const items = loadItems();
+            const it = items.find(i => i.id === id);
+            if (!it) return;
+            it.count = Math.max(0, (it.count || 0) + delta);
+            saveItems(items);
+            renderHelpList();
+        }
+
+        function renderHelpList() {
+            const items = loadItems();
+            const reward = Number(localStorage.getItem(STORAGE_KEY_REWARD)) || 0;
+            helpListEl.innerHTML = '';
+            let totalTimes = 0;
+            let totalYen = 0;
+            items.forEach(it => {
+                const el = document.createElement('div');
+                el.className = 'help-item';
+
+                const nameEl = document.createElement('div');
+                nameEl.className = 'name';
+                nameEl.textContent = it.name;
+
+                const minus = document.createElement('button');
+                minus.textContent = '-';
+                minus.title = '減らす';
+                minus.addEventListener('click', () => changeCount(it.id, -1));
+
+                const countEl = document.createElement('div');
+                countEl.className = 'count';
+                countEl.textContent = it.count || 0;
+
+                const plus = document.createElement('button');
+                plus.textContent = '+';
+                plus.title = '増やす';
+                plus.addEventListener('click', () => changeCount(it.id, 1));
+
+                const subtotal = document.createElement('div');
+                subtotal.textContent = ( (it.count || 0) * reward ) + ' 円';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '削除';
+                removeBtn.title = '項目を削除';
+                removeBtn.addEventListener('click', () => removeItem(it.id));
+
+                el.appendChild(nameEl);
+                el.appendChild(minus);
+                el.appendChild(countEl);
+                el.appendChild(plus);
+                el.appendChild(subtotal);
+                el.appendChild(removeBtn);
+
+                helpListEl.appendChild(el);
+
+                totalTimes += Number(it.count || 0);
+                totalYen += (Number(it.count || 0) * reward);
+            });
+
+            helpSummary.textContent = `合計: ${totalTimes} 回 / ${totalYen} 円`;
+        }
+
+        addHelpBtn.addEventListener('click', () => addItem(newHelpName.value));
+        newHelpName.addEventListener('keyup', (e) => { if (e.key === 'Enter') addItem(newHelpName.value); });
+
+        resetHelpBtn.addEventListener('click', () => {
+            if (!confirm('お手伝いデータをリセットします。よろしいですか？')) return;
+            localStorage.removeItem(STORAGE_KEY_ITEMS);
+            localStorage.removeItem(STORAGE_KEY_REWARD);
+            loadReward();
+            renderHelpList();
+        });
+
+        // 初期値
+        loadReward();
+        renderHelpList();
+
+        // If no help items exist, add a couple of examples
+        const existing = loadItems();
+        if (existing.length === 0) {
+            addItem('食器洗い');
+            addItem('ゴミ出し');
+            // 追加後は0回で良いので saveItems already called in addItem
+            const items = loadItems();
+            // keep counts 0
+            saveItems(items);
+            renderHelpList();
+        }
+
     });
 </script>
 
