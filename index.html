@@ -20,11 +20,10 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #2c3e50;
             margin-bottom: 10px;
-            font-size: 24px;
         }
         .nav {
             display: flex;
@@ -60,12 +59,9 @@
             display: flex;
             align-items: center;
         }
-        .date-header.tbd {
-            color: #718096;
-        }
-        .date-header.none {
-            color: #3182ce;
-        }
+        .date-header.tbd { color: #718096; }
+        .date-header.none { color: #3182ce; }
+        
         .task-item {
             display: flex;
             align-items: flex-start;
@@ -75,46 +71,30 @@
             background-color: #f8fafc;
             transition: background-color 0.2s;
         }
-        .task-item:hover {
-            background-color: #edf2f7;
-        }
+        .task-item:hover { background-color: #edf2f7; }
         input[type="checkbox"] {
             margin-top: 4px;
             margin-right: 12px;
             transform: scale(1.2);
             cursor: pointer;
         }
-        .task-details {
-            flex: 1;
-        }
+        .task-details { flex: 1; }
         .subject {
             font-weight: bold;
             font-size: 14px;
             color: #4a5568;
             margin-bottom: 2px;
         }
-        .content {
-            font-size: 15px;
-            line-height: 1.4;
-        }
-        .note {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 4px;
-        }
-        /* チェック時のスタイル */
+        .content { font-size: 15px; line-height: 1.4; }
+        .note { font-size: 12px; color: #718096; margin-top: 4px; }
+        
         input[type="checkbox"]:checked + .task-details .content {
             text-decoration: line-through;
             color: #a0aec0;
         }
-        input[type="checkbox"]:checked + .task-details .subject {
-            color: #cbd5e0;
-        }
-        input[type="checkbox"]:checked + .task-details .note {
-            color: #e2e8f0;
-        }
+        input[type="checkbox"]:checked + .task-details .subject { color: #cbd5e0; }
+        input[type="checkbox"]:checked + .task-details .note { color: #e2e8f0; }
 
-        /* お手伝い管理用スタイル */
         .help-controls {
             display: flex;
             gap: 10px;
@@ -127,9 +107,7 @@
             border-radius: 6px;
             border: 1px solid #e2e8f0;
         }
-        .help-list {
-            margin-top: 10px;
-        }
+        .help-list { margin-top: 10px; }
         .help-item {
             display: flex;
             gap: 10px;
@@ -139,10 +117,7 @@
             background: #f8fafc;
             margin-bottom: 8px;
         }
-        .help-item .name {
-            flex: 1;
-            font-weight: bold;
-        }
+        .help-item .name { flex: 1; font-weight: bold; }
         .help-item .count {
             width: 56px;
             text-align: center;
@@ -158,11 +133,26 @@
             background: #edf2f7;
             cursor: pointer;
         }
-        .summary {
-            margin-top: 12px;
-            font-weight: bold;
+        .summary { margin-top: 12px; font-weight: bold; }
+        .hidden { display: none !important; }
+
+        /* ログイン画面用スタイル */
+        .login-box {
+            text-align: center;
+            padding: 40px 20px;
         }
-        .hidden { display: none; }
+        .login-btn {
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .login-btn:hover { background-color: #357ae8; }
 
         @media (max-width: 600px) {
             .container { padding: 20px; }
@@ -173,92 +163,82 @@
 <body>
 
 <div class="container">
-    <h1>📅 夏休み宿題タスクリスト</h1>
 
-    <div class="nav">
-        <button id="btnHome" class="active">宿題一覧</button>
-        <button id="btnHelp">お手伝い管理</button>
+    <!-- 1. ログイン前画面 -->
+    <div id="loginArea" class="login-box">
+        <h2>🔐 家族ログイン</h2>
+        <p>お手伝い・宿題管理を利用するにはGoogleログインが必要です。</p>
+        <button id="loginBtn" class="login-btn">Googleでログイン</button>
     </div>
 
-    <!-- 宿題一覧ビュー -->
-    <div id="homeworkView">
+    <!-- 2. ログイン後メイン画面（初期状態は隠す） -->
+    <div id="mainContent" class="hidden">
+        <h1>📅 夏休み宿題タスクリスト</h1>
 
-    <!-- 9月1日提出 -->
-    <div class="date-section">
-        <div class="date-header">🚨 9月1日(火・始業式) 提出</div>
-        <div class="task-item"><input type="checkbox" id="task1"><div class="task-details"><div class="subject">現代文</div><div class="content">『ウィニングサマー』の実施</div><div class="note">※丸付けと間違えたところは赤で直しを書く</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task2"><div class="task-details"><div class="subject">現代文</div><div class="content">宮修二短歌大会プリント</div><div class="note">※短歌を2首作成する</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task3"><div class="task-details"><div class="subject">数学α</div><div class="content">トレーニングノートの提出</div><div class="note">※毎日大問2題以上。HRで数学係に提出</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task4"><div class="task-details"><div class="subject">英語β</div><div class="content">Homework in Summer</div><div class="note">※週に見開き1ページ。Teamsの解答で丸付け＆直し。HRで英語係に提出</div></div></div>
-    </div>
-
-    <!-- 9月2日提出 -->
-    <div class="date-section">
-        <div class="date-header">🚨 9月2日(水) 提出</div>
-        <div class="task-item"><input type="checkbox" id="task5"><div class="task-details"><div class="subject">数学β</div><div class="content">1学期の期末テストの解き直し（全問）</div><div class="note">※A4用紙に記入、表紙をつけて上部2点をホチキス留め。昼休みに数学係へ</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task6"><div class="task-details"><div class="subject">英語α</div><div class="content">(1) 中学マイティサマー</div><div class="note">※全ページ直接書き込み・丸付け・赤直し。p.38〜の単語トレーニング必須。</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task7"><div class="task-details"><div class="subject">英語α</div><div class="content">(3) 自主学習ノート</div><div class="note">※期末試験の解き直しから開始。15段で3ページ×5週＝15ページ。HRで英語係へ</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task8"><div class="task-details"><div class="subject">英語α</div><div class="content">(4) レシテーション・コンテスト意味調べ</div><div class="note">※分からない単語の意味調べ。HRで英語係へ</div></div></div>
-    </div>
-
-    <!-- その他（要確認・提出なし） -->
-    <div class="date-section">
-        <div class="date-header tbd">🔍 日程・詳細確認が必要</div>
-        <div class="task-item"><input type="checkbox" id="task9"><div class="task-details"><div class="subject">学年（教科外）</div><div class="content">books</div><div class="note">※提出日・提出方法についてはTeamsの投稿を参照</div></div></div>
-    </div>
-
-    <div class="date-section">
-        <div class="date-header none">✅ 提出なし（各自学習）</div>
-        <div class="task-item"><input type="checkbox" id="task10"><div class="task-details"><div class="subject">古典</div><div class="content">『ウィニングサマー』の古典内容を進める</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task11"><div class="task-details"><div class="subject">数学α</div><div class="content">これまでの復習（トレノなどの活用）</div></div></div>
-        <div class="task-item"><input type="checkbox" id="task12"><div class="task-details"><div class="subject">英語α</div><div class="content">(2) チャンクで英単語 単語練習</div><div class="note">※p.102〜p.127（例文141〜240）。音声再生と音読。</div></div></div>
-    </div>
-
-    </div>
-
-    <!-- お手伝い管理ビュー -->
-    <div id="helpView" class="hidden">
-        <h2>🤝 お手伝い管理</h2>
-        <div class="help-controls">
-            <label>1回あたりの報酬(円): <input type="number" id="rewardPerTime" min="0" step="10"></label>
-            <input type="text" id="newHelpName" placeholder="お手伝い内容を追加（例: 食器洗い）">
-            <button id="addHelpBtn">追加</button>
-            <button id="resetHelpBtn">リセット</button>
+        <div class="nav">
+            <button id="btnHome" class="active">宿題一覧</button>
+            <button id="btnHelp">お手伝い管理</button>
         </div>
 
-        <div class="help-list" id="helpList"></div>
+        <!-- 宿題一覧ビュー -->
+        <div id="homeworkView">
+            <div class="date-section">
+                <div class="date-header">🚨 9月1日(火・始業式) 提出</div>
+                <div class="task-item"><input type="checkbox" id="task1"><div class="task-details"><div class="subject">現代文</div><div class="content">『ウィニングサマー』の実施</div><div class="note">※丸付けと間違えたところは赤で直しを書く</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task2"><div class="task-details"><div class="subject">現代文</div><div class="content">宮修二短歌大会プリント</div><div class="note">※短歌を2首作成する</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task3"><div class="task-details"><div class="subject">数学α</div><div class="content">トレーニングノートの提出</div><div class="note">※毎日大問2題以上。HRで数学係に提出</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task4"><div class="task-details"><div class="subject">英語β</div><div class="content">Homework in Summer</div><div class="note">※週に見開き1ページ。Teamsの解答で丸付け＆直し。HRで英語係に提出</div></div></div>
+            </div>
 
-        <div class="summary" id="helpSummary">合計: 0 回 / 0 円</div>
+            <div class="date-section">
+                <div class="date-header">🚨 9月2日(水) 提出</div>
+                <div class="task-item"><input type="checkbox" id="task5"><div class="task-details"><div class="subject">数学β</div><div class="content">1学期の期末テストの解き直し（全問）</div><div class="note">※A4用紙に記入、表紙をつけて上部2点をホチキス留め。昼休みに数学係へ</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task6"><div class="task-details"><div class="subject">英語α</div><div class="content">(1) 中学マイティサマー</div><div class="note">※全ページ直接書き込み・丸付け・赤直し。p.38〜の単語トレーニング必須。</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task7"><div class="task-details"><div class="subject">英語α</div><div class="content">(3) 自主学習ノート</div><div class="note">※期末試験の解き直しから開始。15段で3ページ×5週＝15ページ。HRで英語係へ</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task8"><div class="task-details"><div class="subject">英語α</div><div class="content">(4) レシテーション・コンテスト意味調べ</div><div class="note">※分からない単語の意味調べ。HRで英語係へ</div></div></div>
+            </div>
 
-        <p class="note" style="color:#28a745;">※データはクラウド（Firebase）にリアルタイムで自動保存・同期されます。</p>
+            <div class="date-section">
+                <div class="date-header tbd">🔍 日程・詳細確認が必要</div>
+                <div class="task-item"><input type="checkbox" id="task9"><div class="task-details"><div class="subject">学年（教科外）</div><div class="content">books</div><div class="note">※提出日・提出方法についてはTeamsの投稿を参照</div></div></div>
+            </div>
+
+            <div class="date-section">
+                <div class="date-header none">✅ 提出なし（各自学習）</div>
+                <div class="task-item"><input type="checkbox" id="task10"><div class="task-details"><div class="subject">古典</div><div class="content">『ウィニングサマー』の古典内容を進める</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task11"><div class="task-details"><div class="subject">数学α</div><div class="content">これまでの復習（トレノなどの活用）</div></div></div>
+                <div class="task-item"><input type="checkbox" id="task12"><div class="task-details"><div class="subject">英語α</div><div class="content">(2) チャンクで英単語 単語練習</div><div class="note">※p.102〜p.127（例文141〜240）。音声再生と音読。</div></div></div>
+            </div>
+        </div>
+
+        <!-- お手伝い管理ビュー -->
+        <div id="helpView" class="hidden">
+            <h2>🤝 お手伝い管理</h2>
+            <div class="help-controls">
+                <label>1回あたりの報酬(円): <input type="number" id="rewardPerTime" min="0" step="10"></label>
+                <input type="text" id="newHelpName" placeholder="お手伝い内容を追加（例: 食器洗い）">
+                <button id="addHelpBtn">追加</button>
+                <button id="resetHelpBtn">リセット</button>
+            </div>
+
+            <div class="help-list" id="helpList"></div>
+            <div class="summary" id="helpSummary">合計: 0 回 / 0 円</div>
+            <p class="note" style="color:#28a745;">※データはクラウド（Firebase）にリアルタイムで自動保存・同期されます。</p>
+        </div>
     </div>
 
 </div>
 
-<!-- Firebase SDKの読み込み (type="module"を使用します) -->
+<!-- Firebase SDK -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-    // AuthとGoogleログイン用のモジュールを追加
     import { 
         getAuth, 
         GoogleAuthProvider, 
         signInWithPopup, 
         onAuthStateChanged 
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-    // ★ここにFirebaseの設定を貼り付けます★
-    //    const firebaseConfig = {
-    //        apiKey: "YOUR_API_KEY",
-    //        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    //        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-    //        projectId: "YOUR_PROJECT_ID",
-    //        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    //        messagingSenderId: "YOUR_SENDER_ID",
-    //        appId: "YOUR_APP_ID"
-    //    };
 
     const firebaseConfig = {
         apiKey: "AIzaSyCcOeCUZ2_RjAOFH5p4I7bRVI--z0KSec8",
@@ -271,216 +251,213 @@
         measurementId: "G-ZVPCGE3WPQ"
     };
 
+    // Firebaseの初期化（1回のみ実行）
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    
-    // Googleログインを実行する関数（ボタンのクリック時などに呼び出す）
-    function loginWithGoogle() {
+
+    const loginArea = document.getElementById('loginArea');
+    const mainContent = document.getElementById('mainContent');
+    const loginBtn = document.getElementById('loginBtn');
+
+    // Googleログイン処理
+    loginBtn.addEventListener('click', () => {
         signInWithPopup(auth, provider)
             .then((result) => {
                 console.log("ログイン成功:", result.user.displayName);
             })
             .catch((error) => {
                 console.error("ログインエラー:", error);
-                alert("許可されていないアカウント、またはログインエラーです。");
+                alert("ログインに失敗しました。許可されたアカウントかご確認ください。");
             });
-    }
-    
+    });
+
     // ログイン状態の監視
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            // ログイン済みの処理：データベースの読み込みなどを開始
             console.log("ログイン中:", user.email);
+            loginArea.classList.add('hidden');
+            mainContent.classList.remove('hidden');
             initApp(); 
         } else {
-            // 未ログイン時：ログインボタンを表示するなどの処理
             console.log("未ログイン状態");
+            loginArea.classList.remove('hidden');
+            mainContent.classList.add('hidden');
         }
     });
-    
-    // Firebaseの初期化
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
 
-    // ==========================================
-    // タブ切り替えロジック
-    // ==========================================
-    const btnHome = document.getElementById('btnHome');
-    const btnHelp = document.getElementById('btnHelp');
-    const homeworkView = document.getElementById('homeworkView');
-    const helpView = document.getElementById('helpView');
+    // アプリ本体の処理（ログイン成功後に実行）
+    let isInitialized = false;
+    function initApp() {
+        if (isInitialized) return; // 二重初期化を防止
+        isInitialized = true;
 
-    function showHome() {
-        homeworkView.classList.remove('hidden');
-        helpView.classList.add('hidden');
-        btnHome.classList.add('active');
-        btnHelp.classList.remove('active');
-    }
-    function showHelp() {
-        homeworkView.classList.add('hidden');
-        helpView.classList.remove('hidden');
-        btnHome.classList.remove('active');
-        btnHelp.classList.add('active');
-    }
+        // タブ切り替えロジック
+        const btnHome = document.getElementById('btnHome');
+        const btnHelp = document.getElementById('btnHelp');
+        const homeworkView = document.getElementById('homeworkView');
+        const helpView = document.getElementById('helpView');
 
-    btnHome.addEventListener('click', showHome);
-    btnHelp.addEventListener('click', showHelp);
+        function showHome() {
+            homeworkView.classList.remove('hidden');
+            helpView.classList.add('hidden');
+            btnHome.classList.add('active');
+            btnHelp.classList.remove('active');
+        }
+        function showHelp() {
+            homeworkView.classList.add('hidden');
+            helpView.classList.remove('hidden');
+            btnHome.classList.remove('active');
+            btnHelp.classList.add('active');
+        }
 
-    const params = new URLSearchParams(location.search);
-    if (params.get('view') === 'help') showHelp();
+        btnHome.addEventListener('click', showHome);
+        btnHelp.addEventListener('click', showHelp);
 
+        const params = new URLSearchParams(location.search);
+        if (params.get('view') === 'help') showHelp();
 
-    // ==========================================
-    // 宿題一覧（Firebase同期）
-    // ==========================================
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-    // Firebaseのデータが変更されたら画面のチェックを更新
-    onValue(ref(db, 'homeworks'), (snapshot) => {
-        const data = snapshot.val() || {};
+        // 宿題一覧（Firebase同期）
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        
+        onValue(ref(db, 'homeworks'), (snapshot) => {
+            const data = snapshot.val() || {};
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = !!data[checkbox.id];
+            });
+        });
+
         checkboxes.forEach(checkbox => {
-            checkbox.checked = !!data[checkbox.id];
+            checkbox.addEventListener('change', (e) => {
+                set(ref(db, 'homeworks/' + e.target.id), e.target.checked);
+            });
         });
-    });
 
-    // チェックを入れた/外した時にFirebaseに送信
-    checkboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => {
-            set(ref(db, 'homeworks/' + e.target.id), e.target.checked);
+        // お手伝い管理（Firebase同期）
+        const rewardInput = document.getElementById('rewardPerTime');
+        const newHelpName = document.getElementById('newHelpName');
+        const addHelpBtn = document.getElementById('addHelpBtn');
+        const resetHelpBtn = document.getElementById('resetHelpBtn');
+        const helpListEl = document.getElementById('helpList');
+        const helpSummary = document.getElementById('helpSummary');
+
+        let localHelpItems = [];
+        let localReward = 0;
+
+        get(ref(db, 'helpData')).then(snapshot => {
+            if (!snapshot.exists()) {
+                set(ref(db, 'helpData'), {
+                    reward: 0,
+                    items: [
+                        { id: 'h_1', name: '食器洗い', count: 0 },
+                        { id: 'h_2', name: 'ゴミ出し', count: 0 }
+                    ]
+                });
+            }
         });
-    });
 
+        onValue(ref(db, 'helpData'), (snapshot) => {
+            const data = snapshot.val() || {};
+            localHelpItems = data.items || [];
+            localReward = data.reward || 0;
+            rewardInput.value = localReward;
+            renderHelpList();
+        });
 
-    // ==========================================
-    // お手伝い管理（Firebase同期）
-    // ==========================================
-    const rewardInput = document.getElementById('rewardPerTime');
-    const newHelpName = document.getElementById('newHelpName');
-    const addHelpBtn = document.getElementById('addHelpBtn');
-    const resetHelpBtn = document.getElementById('resetHelpBtn');
-    const helpListEl = document.getElementById('helpList');
-    const helpSummary = document.getElementById('helpSummary');
-
-    let localHelpItems = [];
-    let localReward = 0;
-
-    // 初回起動時、データベースが空なら初期データを入れる
-    get(ref(db, 'helpData')).then(snapshot => {
-        if (!snapshot.exists()) {
+        function syncHelpData() {
             set(ref(db, 'helpData'), {
-                reward: 0,
-                items: [
-                    { id: 'h_1', name: '食器洗い', count: 0 },
-                    { id: 'h_2', name: 'ゴミ出し', count: 0 }
-                ]
+                items: localHelpItems,
+                reward: localReward
             });
         }
-    });
 
-    // Firebaseのデータが変更されたらリストを再描画
-    onValue(ref(db, 'helpData'), (snapshot) => {
-        const data = snapshot.val() || {};
-        localHelpItems = data.items || [];
-        localReward = data.reward || 0;
-        rewardInput.value = localReward;
-        renderHelpList();
-    });
+        function makeId() {
+            return 'h_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+        }
 
-    // 変更をFirebaseに保存する共通関数
-    function syncHelpData() {
-        set(ref(db, 'helpData'), {
-            items: localHelpItems,
-            reward: localReward
-        });
-    }
-
-    function makeId() {
-        return 'h_' + Date.now() + '_' + Math.floor(Math.random()*1000);
-    }
-
-    rewardInput.addEventListener('change', () => {
-        localReward = Number(rewardInput.value) || 0;
-        syncHelpData();
-    });
-
-    function addItem(name) {
-        if (!name || name.trim() === '') return;
-        localHelpItems.push({ id: makeId(), name: name.trim(), count: 0 });
-        syncHelpData();
-        newHelpName.value = '';
-    }
-
-    function removeItem(id) {
-        localHelpItems = localHelpItems.filter(i => i.id !== id);
-        syncHelpData();
-    }
-
-    function changeCount(id, delta) {
-        const it = localHelpItems.find(i => i.id === id);
-        if (!it) return;
-        it.count = Math.max(0, (it.count || 0) + delta);
-        syncHelpData();
-    }
-
-    function renderHelpList() {
-        helpListEl.innerHTML = '';
-        let totalTimes = 0;
-        let totalYen = 0;
-        
-        localHelpItems.forEach(it => {
-            const el = document.createElement('div');
-            el.className = 'help-item';
-
-            const nameEl = document.createElement('div');
-            nameEl.className = 'name';
-            nameEl.textContent = it.name;
-
-            const minus = document.createElement('button');
-            minus.textContent = '-';
-            minus.addEventListener('click', () => changeCount(it.id, -1));
-
-            const countEl = document.createElement('div');
-            countEl.className = 'count';
-            countEl.textContent = it.count || 0;
-
-            const plus = document.createElement('button');
-            plus.textContent = '+';
-            plus.addEventListener('click', () => changeCount(it.id, 1));
-
-            const subtotal = document.createElement('div');
-            subtotal.textContent = ( (it.count || 0) * localReward ) + ' 円';
-
-            const removeBtn = document.createElement('button');
-            removeBtn.textContent = '削除';
-            removeBtn.addEventListener('click', () => removeItem(it.id));
-
-            el.appendChild(nameEl);
-            el.appendChild(minus);
-            el.appendChild(countEl);
-            el.appendChild(plus);
-            el.appendChild(subtotal);
-            el.appendChild(removeBtn);
-
-            helpListEl.appendChild(el);
-
-            totalTimes += Number(it.count || 0);
-            totalYen += (Number(it.count || 0) * localReward);
+        rewardInput.addEventListener('change', () => {
+            localReward = Number(rewardInput.value) || 0;
+            syncHelpData();
         });
 
-        helpSummary.textContent = `合計: ${totalTimes} 回 / ${totalYen} 円`;
+        function addItem(name) {
+            if (!name || name.trim() === '') return;
+            localHelpItems.push({ id: makeId(), name: name.trim(), count: 0 });
+            syncHelpData();
+            newHelpName.value = '';
+        }
+
+        function removeItem(id) {
+            localHelpItems = localHelpItems.filter(i => i.id !== id);
+            syncHelpData();
+        }
+
+        function changeCount(id, delta) {
+            const it = localHelpItems.find(i => i.id === id);
+            if (!it) return;
+            it.count = Math.max(0, (it.count || 0) + delta);
+            syncHelpData();
+        }
+
+        function renderHelpList() {
+            helpListEl.innerHTML = '';
+            let totalTimes = 0;
+            let totalYen = 0;
+            
+            localHelpItems.forEach(it => {
+                const el = document.createElement('div');
+                el.className = 'help-item';
+
+                const nameEl = document.createElement('div');
+                nameEl.className = 'name';
+                nameEl.textContent = it.name;
+
+                const minus = document.createElement('button');
+                minus.textContent = '-';
+                minus.addEventListener('click', () => changeCount(it.id, -1));
+
+                const countEl = document.createElement('div');
+                countEl.className = 'count';
+                countEl.textContent = it.count || 0;
+
+                const plus = document.createElement('button');
+                plus.textContent = '+';
+                plus.addEventListener('click', () => changeCount(it.id, 1));
+
+                const subtotal = document.createElement('div');
+                subtotal.textContent = ( (it.count || 0) * localReward ) + ' 円';
+
+                const removeBtn = document.createElement('button');
+                removeBtn.textContent = '削除';
+                removeBtn.addEventListener('click', () => removeItem(it.id));
+
+                el.appendChild(nameEl);
+                el.appendChild(minus);
+                el.appendChild(countEl);
+                el.appendChild(plus);
+                el.appendChild(subtotal);
+                el.appendChild(removeBtn);
+
+                helpListEl.appendChild(el);
+
+                totalTimes += Number(it.count || 0);
+                totalYen += (Number(it.count || 0) * localReward);
+            });
+
+            helpSummary.textContent = `合計: ${totalTimes} 回 / ${totalYen} 円`;
+        }
+
+        addHelpBtn.addEventListener('click', () => addItem(newHelpName.value));
+        newHelpName.addEventListener('keyup', (e) => { if (e.key === 'Enter') addItem(newHelpName.value); });
+
+        resetHelpBtn.addEventListener('click', () => {
+            if (!confirm('お手伝いデータをリセットします。よろしいですか？')) return;
+            localHelpItems = [];
+            localReward = 0;
+            syncHelpData();
+        });
     }
-
-    addHelpBtn.addEventListener('click', () => addItem(newHelpName.value));
-    newHelpName.addEventListener('keyup', (e) => { if (e.key === 'Enter') addItem(newHelpName.value); });
-
-    resetHelpBtn.addEventListener('click', () => {
-        if (!confirm('お手伝いデータをリセットします。よろしいですか？')) return;
-        localHelpItems = [];
-        localReward = 0;
-        syncHelpData();
-    });
 </script>
 
 </body>
