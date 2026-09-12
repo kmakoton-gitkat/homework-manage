@@ -240,16 +240,25 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+    // AuthとGoogleログイン用のモジュールを追加
+    import { 
+        getAuth, 
+        GoogleAuthProvider, 
+        signInWithPopup, 
+        onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
     // ★ここにFirebaseの設定を貼り付けます★
-//    const firebaseConfig = {
-//        apiKey: "YOUR_API_KEY",
-//        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-//        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-//        projectId: "YOUR_PROJECT_ID",
-//        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-//        messagingSenderId: "YOUR_SENDER_ID",
-//        appId: "YOUR_APP_ID"
-//    };
+    //    const firebaseConfig = {
+    //        apiKey: "YOUR_API_KEY",
+    //        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    //        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    //        projectId: "YOUR_PROJECT_ID",
+    //        storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    //        messagingSenderId: "YOUR_SENDER_ID",
+    //        appId: "YOUR_APP_ID"
+    //    };
 
     const firebaseConfig = {
         apiKey: "AIzaSyCcOeCUZ2_RjAOFH5p4I7bRVI--z0KSec8",
@@ -262,6 +271,35 @@
         measurementId: "G-ZVPCGE3WPQ"
     };
 
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    
+    // Googleログインを実行する関数（ボタンのクリック時などに呼び出す）
+    function loginWithGoogle() {
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                console.log("ログイン成功:", result.user.displayName);
+            })
+            .catch((error) => {
+                console.error("ログインエラー:", error);
+                alert("許可されていないアカウント、またはログインエラーです。");
+            });
+    }
+    
+    // ログイン状態の監視
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // ログイン済みの処理：データベースの読み込みなどを開始
+            console.log("ログイン中:", user.email);
+            initApp(); 
+        } else {
+            // 未ログイン時：ログインボタンを表示するなどの処理
+            console.log("未ログイン状態");
+        }
+    });
+    
     // Firebaseの初期化
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
